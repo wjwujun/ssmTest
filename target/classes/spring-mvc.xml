@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <description>Spring MVC Configuration</description>
+
+<!--处理适配器-->
+<!--处理映射器-->
+
+    <!-- 加载配置属性文件 -->
+    <context:property-placeholder ignore-unresolvable="true" location="classpath:config.properties"/>
+
+    <!-- 使用 Annotation 自动注册 Bean,springmvc只扫描 @Controller -->
+    <context:component-scan base-package="com.ssm.demo" use-default-filters="false">
+        <!--只扫描controller-->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!-- 默认的注解映射的支持 -->
+    <mvc:annotation-driven />
+
+    <!-- 定义视图文件解析 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="${web.view.prefix}"/>
+        <property name="suffix" value="${web.view.suffix}"/>
+    </bean>
+
+    <!-- 静态资源映射 -->
+    <mvc:resources mapping="/static/**" location="/static/" cache-period="31536000"/>
+
+
+    <!--拦截器配置-->
+    <mvc:interceptors>
+
+        <!-- 拦截器配置，拦截顺序：先执行后定义的，排在第一位的最后执行。-->
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>   <!--拦截所有路径-->
+            <mvc:exclude-mapping path="/login"></mvc:exclude-mapping>   <!--排除登录，不拦截-->
+            <mvc:exclude-mapping path="/static/**"></mvc:exclude-mapping>
+            <!--用哪个类拦截-->
+            <bean class="com.ssm.demo.interceptor.loginInterceptor"></bean>
+        </mvc:interceptor>
+
+
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>   <!--拦截所有路径-->
+            <!--用哪个类拦截-->
+            <bean class="com.ssm.demo.interceptor.PermissionInterceptor"></bean>
+
+        </mvc:interceptor>
+
+
+    </mvc:interceptors>
+
+    <!--全局异常处理器-->
+    <bean class="com.ssm.demo.exception.customException"></bean>
+
+
+    <!--多媒体处理器-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--文件上传大小-->
+        <property name="maxInMemorySize" value="8388608"></property>
+    </bean>
+
+</beans>

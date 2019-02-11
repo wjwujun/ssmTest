@@ -2,6 +2,8 @@ package com.ssm.demo.controller;
 
 
 import com.ssm.demo.entity.User;
+import com.ssm.demo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -11,11 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
 public class LoginController {
 
+        @Autowired
+        private UserService userService;
 
         private User user=new User();
 
@@ -26,14 +31,40 @@ public class LoginController {
                 return "login";
         }
 
-    @RequestMapping(value ="login",method = RequestMethod.POST)
+
+        @GetMapping("select")
+        @ResponseBody
+        public List<User> selectAll(){
+                System.out.println("-----------------------");
+                System.out.println(userService.selectAll());
+                return userService.selectAll();
+        }
+
+        @GetMapping("add")
+        @ResponseBody
+        public String add(){
+                userService.insert();
+                return "ok";
+        }
+
+        @GetMapping("del")
+        @ResponseBody
+        public String del(){
+                userService.del();
+                return "ok";
+        }
+
+
+/*    @RequestMapping(value ="login",method = RequestMethod.POST)
     public String login(@RequestParam(required = true) String name,@RequestParam(required = true) String pwd,BindingResult result)
     {
+            *//*
+            *错误信息
+                int errorCount = result.getErrorCount();
+            * *//*
 
-        /*
-        * 错误信息
-        * int errorCount = result.getErrorCount();
-        * */
+
+
 
         if(user==null){     //登录失败
             return login();
@@ -41,27 +72,28 @@ public class LoginController {
             return "redirect:/main";
         }
 
-    }
+    }*/
 
 
     /*校验*/
-    @GetMapping("user")
+ /*   @GetMapping("user")
     @ResponseBody
     public User AddUser(@RequestBody @Valid User userTemp){
         return user;
-    }
+    }*/
+
 
     /*json*/
-    @GetMapping("user")
+/*    @GetMapping("user")
     @ResponseBody
     public User getUser(@RequestBody User userTemp){
-            user.setName("fsdf");
+            user.setUsername("fsdf");
             user.setPwd("111");
         return user;
-    }
+    }*/
 
     /*json*/
-    @PostMapping("user")
+   /* @PostMapping("user")
     public User upload(MultipartFile pic, HttpServletRequest request) throws IOException {
 
         //存放文件路径
@@ -84,12 +116,10 @@ public class LoginController {
         pic.transferTo(file);
 
 
-
-
-        user.setName("fsdf");
+        user.setUsername("fsdf");
         user.setPwd("111");
         return user;
-    }
+    }*/
 
 
 }

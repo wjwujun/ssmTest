@@ -6,6 +6,8 @@ import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
+import java.util.Date;
+
 /*
  Jackson 类库包含了很多注解，可以让我们快速建立 Java 类与 JSON 之间的关系。
 
@@ -37,11 +39,13 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     @NotEmpty(message = "姓名不能为空")
-    private  String name;
-    private  int age;
+    private  String username;
 
     @JsonIgnore   //     在json序列化时将java bean中的一些属性忽略掉，序列化和反序列化都受影响。
     private  String pwd;
+    private  String phone;
+    private  String salt;
+    private Date created;
 
 
 }

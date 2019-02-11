@@ -17,12 +17,12 @@ public class loginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
 
         //获取登录信息
-        User user = (User) httpServletRequest.getSession().getAttribute(ConstantUtils.SESSION_USER);
+  /*      User user = (User) httpServletRequest.getSession().getAttribute(ConstantUtils.SESSION_USER);
 
         if(user==null) {         //如果没有登陆信息，就返回登陆
             httpServletResponse.sendRedirect("/login");
         }
-
+*/
         return true;//登陆后放行
 
 

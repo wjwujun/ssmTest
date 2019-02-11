@@ -7,8 +7,30 @@
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <description>Spring MVC Configuration</description>
+    <!--
+        1. request请求到DispatcherServlet(前端控制器)
+        2. 前端控制器，请求HandlerMapping（处理器映射器），查找handler（处理器controller）
+        3. HandlerMapping（处理器映射器）返回一个执行链(
+                        handlerExecutionChain{
+                            handlerinterceptor   拦截器
+                            handler（controller） 处理器
+                        }
+              )给dispatcherServlet(前端控制器)
+        4.dispatcherServlet(前端控制器)请求，handlerAdapter（处理器适配器）去执行handler（controller）
+        5.handlerAdapter（处理器适配器）返回一个modelAndView给dispatcherServlet(前端控制器)
+        6.dispatcherServlet(前端控制器)请求，（view resolver）视图解析器
+        7.view resolver（视图解析器）反会view给dispatcherServlet(前端控制器)，
+        8.dispatcherServlet(前端控制器)返回视图给用户
+
+
+
+    -->
+
 
 <!--处理适配器-->
+
+
+
 <!--处理映射器-->
 
     <!-- 加载配置属性文件 -->
